@@ -5,8 +5,8 @@
 graphics.off() 
 #Stacked bar for community struture GZ project.
 
-library(dplyr)
 library(plyr)
+library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(RColorBrewer)
