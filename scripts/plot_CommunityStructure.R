@@ -21,7 +21,7 @@ setwd("SETWORKINGDIRHERE")
 #load data
 #taxonomyXcounts <- read.delim("/Users/tito-admin/Dropbox/ResearchLisa/Temp14/Methylothrops/methylotrophs_v4.txt")
 taxonomyXcounts <- read.delim("SETTAXCOUNTSFILEHERE")
-sample_names = c(SETSAMPLENAMESHERE)
+sample_names = c("SETSAMPLENAMESHERE")
 samples <- c(1:length(sample_names))
 #samples <- c(7, 8, 9, 10, 11, 12) #Only for the 16S data
 
