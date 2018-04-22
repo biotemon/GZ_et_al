@@ -1,7 +1,7 @@
 #Plot community a versitile script to plot stacked bar plots
 #Version Nov 17. 2017
 
-(list=ls()) 
+rm(list=ls()) 
 graphics.off() 
 #Stacked bar for community struture GZ project.
 
