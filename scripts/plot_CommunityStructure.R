@@ -19,23 +19,19 @@ TH = SETTHRESHOLDHERE
 setwd("SETWORKINGDIRHERE")
 
 #load data
-#taxonomyXcounts <- read.delim("/Users/tito-admin/Dropbox/ResearchLisa/Temp14/Methylothrops/methylotrophs_v4.txt")
 taxonomyXcounts <- read.delim("SETTAXCOUNTSFILEHERE")
 sample_names = c("SETSAMPLENAMESHERE")
 samples <- c(1:length(sample_names))
-#samples <- c(7, 8, 9, 10, 11, 12) #Only for the 16S data
 
-
-#simplifyTaxonomyMatrix(my_relative, my_absolute, my_level, my_taxonomycounts)
-#my_level ==> Kingdom level 1
-#my_level ==> Phylum level 2
-#my_level ==> Class level 3
-#my_level ==> Order level 4
-#my_level ==> Family level 5
-#my_level ==> Genus level 6
-#my_level ==> Species level 7
-
-#simplifyTaxonomyMatrix(relative_abundance2, tax_counts2, 7, taxonomyXcounts)
+#Definition of my_level
+#my_level ==> Superkingdom level 1
+#my_level ==> Kingdom level 2
+#my_level ==> Phylum level 3
+#my_level ==> Class level 4
+#my_level ==> Order level 5
+#my_level ==> Family level 6
+#my_level ==> Genus level 7
+#my_level ==> Species level 8
 
 #Find unique headers
 taxones = c()
@@ -69,18 +65,12 @@ for (i in 1:length(samples))
   for (j in 1:length(vec)){
     for(k in 1:length(uniq_taxons)){
       if (vec[j] == uniq_taxons[k]){
-        #outstring  = paste(vec[j], uniq_taxons[k], vec2[j], sep = " ")
-        #print(outstring) 
         tax_counts[i,k] <- as.numeric(vec2[j])
       }
     }
     
   }
 }
-
-#if(uniq_taxons[1] == ""){
-#  uniq_taxons[1] = "Others"
-#}
 
 #Relative Abundance
 SumSamples = rowSums(tax_counts)
@@ -89,20 +79,13 @@ relative_abundance = (tax_counts *100) / SumSamples
 colnames(tax_counts) <- uniq_taxons
 colnames(relative_abundance) <- uniq_taxons
 
-#RUN HERE THE FUNCTION 
-
-#Functions
-
-#simplifyTaxonomyMatrix <- function(my_relative, my_absolute, my_level, my_taxonomycounts)
-#{
-
 my_relative = relative_abundance
 my_absolute = tax_counts
 my_level = 8
 my_taxonomycounts = taxonomyXcounts
 
 
-#We want to coalesce or merge those taxonomies with lower than a certain threshold (0.5%) into a higher rank of taxonomy.
+#We want to coalesce or merge those taxonomies with lower than a certain threshold (e.g. 0.5%) into a higher rank of taxonomy
 
 #Subset higher ranks
 high_ranks = setNames(data.frame(my_taxonomycounts[,2], my_taxonomycounts[,7], my_taxonomycounts[,8], my_taxonomycounts[,9], my_taxonomycounts[,10], my_taxonomycounts[,11], my_taxonomycounts[,12], my_taxonomycounts[,13], my_taxonomycounts[,14]), c("ID", "SUPERKINGDOM","KINGDOM", "PHYLUM", "CLASS", "ORDER", "FAMILY", "GENUS", "SPECIES"))
@@ -127,7 +110,6 @@ for(i in 1:dim(high_ranks)[1]){
       }
     }
    if(last_term != ''){
-     #print(last_term)
       my_levels <- levels(high_ranks[,j])
       my_levels[length(my_levels) + 1 ] <- last_term
       my_levels <- unique(my_levels)
@@ -137,7 +119,6 @@ for(i in 1:dim(high_ranks)[1]){
     
   }
 } 
-
 
 zerocols <- high_ranks[which(high_ranks[,2] == '' & high_ranks[,3] == '' & high_ranks[,4] == '' & high_ranks[,5] == '' & high_ranks[,6] == '' & high_ranks[,7] == '' & high_ranks[,8] == '' & high_ranks[,1] != 0),1]
 zerovec <- as.vector(which(high_ranks[,2] == '' & high_ranks[,3] == '' & high_ranks[,4] == '' & high_ranks[,5] == '' & high_ranks[,6] == '' & high_ranks[,7] == '' & high_ranks[,8] == '' & high_ranks[,1] != 0))
@@ -150,10 +131,6 @@ for(i in zerocols){
   colnames(my_relative)[colnames(my_relative) == i] <- 0
 }
 }
-
-
-
-
 
 #Loop to coalesce columns names
 my_level = my_level - 1
@@ -173,7 +150,7 @@ for(k in my_level:2)
         low_counter = low_counter + 1
       } 
     }
-    if(low_counter == 6)
+    if(low_counter == length(sample_names))
     {
       #Get the row in taxonomy where is the ID in the ID column.
       if(any(grep("^[0-9]+$",matrix_col_names[i], perl = TRUE, value=FALSE))){
@@ -211,8 +188,8 @@ for(i in 1:dim(my_relative)[2])
 {
   if(any(grep("^[0-9]+$",matrix_col_names[i], perl = TRUE, value=FALSE))){
     row_val = which(high_ranks[,1] == matrix_col_names[i])
-    higher_name = as.character(high_ranks[row_val[1],7])
-    part2_name = as.character(high_ranks[row_val[1],8])
+    higher_name = as.character(high_ranks[row_val[1],8])
+    part2_name = as.character(high_ranks[row_val[1],9])
     if(!is.na(part2_name)){
     if(part2_name != ""){
     if(part2_name != higher_name){
@@ -295,8 +272,6 @@ suited_guide_vector <- as.vector(c(c("sample_names", "V1"), suited_guide_vector)
 }else{
   suited_guide_vector <- as.vector(c(c("sample_names"), suited_guide_vector))
 }
-
-
 
 simple_absolute_matrix_3 = simple_absolute_matrix_2[suited_guide_vector]
 simple_relative_matrix_3 = simple_relative_matrix_2[suited_guide_vector]
@@ -427,5 +402,13 @@ ggplot(data = simple_absolute_melt, aes(x = sample_names, y = value, fill = vari
 dev.off()
 
 pdf("taxonomy_rel_cutoff_SETTHRESHOLDHERE.pdf", width=10, height=8)
+ggplot(data = simple_relative_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity") + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) +  scale_colour_manual("black") + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
+dev.off()
+
+svg("taxonomy_abs_cutoff_SETTHRESHOLDHERE.svg", width=12, height=7)
+ggplot(data = simple_absolute_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity") + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
+dev.off()
+
+svg("taxonomy_rel_cutoff_SETTHRESHOLDHERE.svg", width=10, height=8)
 ggplot(data = simple_relative_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity") + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) +  scale_colour_manual("black") + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
 dev.off()
