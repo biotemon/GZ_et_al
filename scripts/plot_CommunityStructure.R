@@ -422,10 +422,10 @@ simple_color_vec <- colfunc(xval)
 #simple_color_vec[21] <- "#849fff" #royal light blue
 #simple_color_vec[22] <- "#5a6384" #royal grye blue
 
-pdf("GZ_MGRAST_abs_cutoff_2.pdf", width=12, height=7)
+pdf("taxonomy_abs_cutoff_SETTHRESHOLDHERE.pdf", width=12, height=7)
 ggplot(data = simple_absolute_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity") + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
 dev.off()
 
-pdf("GZ_MGRAST_rel_cutoff_2.pdf", width=10, height=8)
+pdf("taxonomy_rel_cutoff_SETTHRESHOLDHERE.pdf", width=10, height=8)
 ggplot(data = simple_relative_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity") + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) +  scale_colour_manual("black") + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
 dev.off()
