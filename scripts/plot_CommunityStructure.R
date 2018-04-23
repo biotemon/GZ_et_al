@@ -374,28 +374,7 @@ xval =  dim(simple_relative_matrix_3)[2] - 1
 #colfunc <- colorRampPalette(brewer.pal(11,"Spectral"))
 colfunc <- colorRampPalette(c("#c7c5c4", "#9001c9", "#cc12c0", "#9E0142", "#ff9e9e", "#ff2900", "#ff6f00", "#ffaa00" , "#ffe100",  "#eadf60", "#8db500",  "#b5d153", "#118200", "#72996c", "#00ffd8", "#00b2ff", "#97c6bf",  "#43a898", "#357089",  "#1b44d6", "#849fff", "#5a6384" ))
 simple_color_vec <- colfunc(xval)
-#simple_color_vec[] <- "#c7c5c4" #Grey
-#simple_color_vec[1] <- "#9001c9" #Violet
-#simple_color_vec[2] <- "#cc12c0" #Fucsia
-#simple_color_vec[3] <- "#9E0142" #Red
-#simple_color_vec[5] <- "#ff9e9e" #Light red
-#simple_color_vec[6] <- "#ff2900" #coral red
-#simple_color_vec[7] <- "#ff6f00" #Orange
-#simple_color_vec[8] <- "#ffaa00" #Orange
-#simple_color_vec[9] <- "#ffe100" #Yellow
-#simple_color_vec[10] <- "#eadf60" #light Yellow
-#simple_color_vec[11] <- "#8db500" #Verde mango biche 
-#simple_color_vec[12] <- "#b5d153" #Verde menta pastel
-#simple_color_vec[13] <- "#118200" #Verde pasto
-#simple_color_vec[14] <- "#72996c" #Verde gris
-#simple_color_vec[15] <- "#00ffd8" #light blue
-#simple_color_vec[16] <- "#00b2ff" #blue
-#simple_color_vec[17] <- "#97c6bf" #Light grey blue
-#simple_color_vec[18] <- "#43a898" #grey blue
-#simple_color_vec[19] <- "#357089" #dark grey blue
-#simple_color_vec[20] <- "#1b44d6" #royal blue
-#simple_color_vec[21] <- "#849fff" #royal light blue
-#simple_color_vec[22] <- "#5a6384" #royal grye blue
+#SETCOLORSHERE
 
 pdf("taxonomy_abs_cutoff_SETTHRESHOLDHERE.pdf", width=12, height=7)
 ggplot(data = simple_absolute_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity") + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
