@@ -225,7 +225,7 @@ simple_relative_matrix_2 <- cbind.data.frame(sample_names, simple_relative_matri
 guide_vector = c()
 for(i in 1:dim(high_ranks)[1])
   {
-  for(j in 2:7)
+  for(j in 2:8)
     {
     my_value = as.character(high_ranks[i,j])
       if(is.na(match(my_value, guide_vector)) && (my_value != ""))
