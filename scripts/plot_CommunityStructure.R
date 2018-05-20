@@ -1,5 +1,6 @@
-#Plot community a versitile script to plot stacked bar plots
-#Version Nov 17. 2017
+#Plot_community 
+#a versatile script to plot stacked bar plots representing community analysis
+#Version May 19. 2017
 
 rm(list=ls()) 
 graphics.off() 
@@ -10,7 +11,6 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(RColorBrewer)
-library(plotly)
 
 #Threshold of lowest percentage to show as an individual taxonomy
 TH = SETTHRESHOLDHERE
@@ -249,8 +249,9 @@ names_index=c()
 
 for(i in 1:length(headers_in_simple)){
   x_name <- as.vector(strsplit(headers_in_simple[i], " "))[[1]][1]
-  if(any(grep(x_name, guide_vector, perl = TRUE, value=FALSE))){
-    x_val <- as.numeric(grep(x_name, guide_vector, perl = TRUE, value=FALSE))
+  xx = paste("\\b", x_name, "\\b", sep = '')
+  if(any(grep(xx, guide_vector, perl = TRUE, value=FALSE))){
+    x_val <- as.numeric(grep(xx, guide_vector, perl = TRUE, value=FALSE))
     numeric_index = c(numeric_index, x_val[1])
     names_index = c(names_index, headers_in_simple[i])
   }else{
