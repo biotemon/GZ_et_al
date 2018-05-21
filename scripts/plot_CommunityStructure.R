@@ -392,3 +392,7 @@ dev.off()
 svg("taxonomy_rel_cutoff_SETTHRESHOLDHERE.svg", width=10, height=8)
 ggplot(data = simple_relative_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity", size = 0.25) + theme_classic() + theme(axis.text.x = element_text(color="black"),axis.text.y = element_text(color="black")) +  scale_colour_manual("black") + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1))
 dev.off()
+
+#Write a csv file with the actual numbers shown in the simplified plots.
+write.csv(simple_absolute_melt, file = "simple_absolute_melt.csv")
+write.csv(simple_relative_melt, file = "simple_relative_melt.csv")
