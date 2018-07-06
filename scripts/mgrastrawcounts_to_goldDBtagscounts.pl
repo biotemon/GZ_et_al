@@ -37,7 +37,7 @@ my ($driver, $database, $dsn, $userid, $password, $dbh);
 #GZ_db
 use DBI;
 $driver = "SQLite";
-$database = '/Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/GZ_v17.db';
+$database = '/Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/GZ_v18.db';
 $dsn = "DBI:$driver:dbname=$database"; #No spaces here!!
 
 $userid = "";
