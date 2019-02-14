@@ -103,7 +103,7 @@ for(i in 1:dim(high_ranks)[1]){
   for(j in 2:dim(high_ranks)[2]){
     if(!is.na(high_ranks[i,j]))
       {
-      if(high_ranks[i,j] != ""){
+      if(high_ranks[i,j] != "_"){
         if( !grepl("[[:space:]]+", high_ranks[i,j])){
           last_term <- as.character(high_ranks[i,j])
         }
