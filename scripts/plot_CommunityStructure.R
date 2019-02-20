@@ -20,6 +20,10 @@ setwd("SETWORKINGDIRHERE")
 
 #load data
 taxonomyXcounts <- read.delim("SETTAXCOUNTSFILEHERE")
+
+#Remove unknown terms
+taxonomyXcounts<-taxonomyXcounts[!(taxonomyXcounts$SUPERKINGDOM=="Unknown"),]
+
 sample_names = c("SETSAMPLENAMESHERE")
 samples <- c(1:length(sample_names))
 
