@@ -47,7 +47,7 @@ $password = "";
 $dbh = DBI->connect($dsn, $userid, $password, { RaiseError => 1 })
 or die $DBI::errstr;
 
-my(@reca_blast, %counts_of_id, $val, @fields, @fields1, @fields1A, $id);
+my(@reca_blast, %counts_of_id, $val, @fields, @fields1, @fields1A, @fields3, @fields4, $id);
 my ($i, $cmd, $outcmd, $progress_bar, @fields2, $stmt, $species, @input_file);
 
 #Open list file
@@ -61,7 +61,8 @@ print "Determining taxonomic query terms\n";
 $progress_bar = Term::ProgressBar->new(scalar(@input_file));
 $i = 0;
 
-my($cmd3, $cmd4, $outcmd4, @fields3, $rsuperkingdom, $rkingdom, $rclass, $rorder, $rphylum, $rfamily, $rgenus, $rspecies, $itisid, @final_set, %taxid_of);
+my($cmd3, $cmd4, $outcmd4, $rsuperkingdom, $rkingdom, $rclass, $rorder);
+my($rphylum, $rfamily, $rgenus, $rspecies, $itisid, @final_set, %taxid_of);
 my(@unique_query_terms);
 @unique_query_terms = ();
 
@@ -204,7 +205,6 @@ foreach my $id (@unique_query_terms)
 	            $rfamily = '';
 	            $rgenus = '';
                     $rspecies = '';
-                    @row2 = ();
 			}else{
 					$cmd3 = 'echo '.'\"'.$id.'\"'.'  > query.txt';
 	 				system($cmd3);
@@ -282,7 +282,6 @@ foreach my $id (@unique_query_terms)
 		                $rfamily = '';
 		                $rgenus = '';
 			            $rspecies = '';
-			            @row3 = ();
 		           	}else{
 		               	push @add_manually_terms, $id;
 		            }
