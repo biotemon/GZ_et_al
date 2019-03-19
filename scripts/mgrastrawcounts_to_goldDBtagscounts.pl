@@ -37,7 +37,9 @@ my ($driver, $database, $dsn, $userid, $password, $dbh);
 #GZ_db
 use DBI;
 $driver = "SQLite";
-$database = '/Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/GZ_v18.db';
+#Next line should look like this.
+#$database = '/Users/tito-admin/Tito/JOYELABACKUP/github/db/SK_metaT_v2.db';
+$database = 'SETDABASEHERE';
 $dsn = "DBI:$driver:dbname=$database"; #No spaces here!!
 
 $userid = "";
@@ -83,47 +85,45 @@ $progress_bar = Term::ProgressBar->new(scalar(@unique_query_terms));
 
 foreach my $id (@unique_query_terms)
 {
- 	$stmt = $dbh->prepare('SELECT * FROM TAXONOMY WHERE NO_RANK = ?');
-	$stmt->execute($id) or die $DBI::errstr;
-		
-	@row1 = $stmt->fetchrow_array();
-
-	if(scalar(@row1)>0){
+	$outcmd = undef;
+	$cmd = "sqlite3 ".$database." \"SELECT * FROM TAXONOMY WHERE NO_RANK = \'".$id."\';\"";
+	$outcmd = `$cmd`;
+	if($outcmd){
+		@fields = split '\|', $outcmd;
 	 	#We found taxonomy using the no_rank field
-	 	$taxid_of{$id}=$row1[0];
-	 	#print $id."\t".$row1[0]."\n";
+	 	$taxid_of{$id}=$fields[0];
 	 }else{
 	 	@fields2 = split ' ', $id;
 	 	if(scalar(@fields2) > 1){
 			#If the species start with sp. 
 			if($fields2[1] eq 'sp.' || $fields2[1] eq 'sp' || $fields2[1] eq 'strain')
 			{
-				$stmt = $dbh->prepare('SELECT * FROM TAXONOMY WHERE GENUS = ?');
-				$stmt->execute($fields2[0]) or die $DBI::errstr;
+				$outcmd = undef;
+				$cmd = "sqlite3 ".$database." \"SELECT * FROM TAXONOMY WHERE GENUS = \'".$fields2[0]."\';\"";
+				$outcmd = `$cmd`;
 			}elsif($fields2[0] eq 'Candidatus'){
-				$stmt = $dbh->prepare('SELECT * FROM TAXONOMY WHERE GENUS = ?');
-				$stmt->execute($fields2[1]) or die $DBI::errstr;
+				$outcmd = undef;
+				$cmd = "sqlite3 ".$database." \"SELECT * FROM TAXONOMY WHERE GENUS = \'".$fields2[1]."\';\"";
+				$outcmd = `$cmd`;
 			}else{
-				$stmt = $dbh->prepare('SELECT * FROM TAXONOMY WHERE GENUS = ? AND SPECIES = ?');
-				$stmt->execute($fields2[0], $fields2[1]) or die $DBI::errstr;
+				$outcmd = undef;
+				$cmd = "sqlite3 ".$database." \"SELECT * FROM TAXONOMY WHERE GENUS = \'".$fields2[0]."\' AND SPECIES = \'".$fields2[1]."\';\"";
+				$outcmd = `$cmd`;
 			}
-
-		 	@row = $stmt->fetchrow_array();
-
-		 	if(scalar(@row)>0){
+		 	if($outcmd){
 		 		#We found taxonomy in the local DB matching species and genus
-		 		$taxid_of{$id}=$row[0];
-		 		#print $id."\t".$taxid_of{$id}."\n";
+				@fields3 = split '\|', $outcmd;
+	 			$taxid_of{$id}=$fields3[0];
 		 	}
 		 }else{
-			$stmt = $dbh->prepare('SELECT * FROM TAXONOMY WHERE GENUS = ?');
-			$stmt->execute($fields2[1]) or die $DBI::errstr;
-			@row = $stmt->fetchrow_array();
+		 	$outcmd = undef;
+			$cmd = "sqlite3 ".$database." \"SELECT * FROM TAXONOMY WHERE GENUS = \'".$fields2[1]."\';\"";
+			$outcmd = `$cmd`;
 
-	 		if(scalar(@row)>0){
+	 		if($outcmd){
 	 			#We found taxonomy in the local DB matching species and genus
-	 			#print "\n";
-	 			$taxid_of{$id}=$row[0];
+				@fields4 = split '\|', $outcmd;
+	 			$taxid_of{$id}=$fields4[0];
 	 			}
 		 	}
 		 	
@@ -186,27 +186,29 @@ foreach my $id (@unique_query_terms)
 	            $stmt->execute(undef, "ITIS", $final_set[0], undef, $final_set[1], $final_set[2], $final_set[3], $final_set[4], $final_set[5], $final_set[6], $final_set[7] , '', $final_set[8]) or die "Couldn't execute statement: " . $stmt->errstr;
 	                
 	            #Request the taxid of the last inserted row
-	            $stmt = $dbh->prepare('select seq from sqlite_sequence where name=?');
-	            $stmt->execute("TAXONOMY");
-	            my @row2 = $stmt->fetchrow_array();
-	            $taxid_of{$id}=$row2[0];
+		    $outcmd = undef;
+		    $cmd = "sqlite3 ".$database." \"select seq from sqlite_sequence where name= \'".'TAXONOMY'."\';\"";
+		    $outcmd = `$cmd`;
+			
+	            @fields3 = split '\|', $outcmd;
+	            $taxid_of{$id}=$fields3[0];
 
 	            #print "Added to DB from ITIS\n";	
-				#print $final_set[0]."\t".$final_set[1]."\t".$final_set[2]."\t".$final_set[3]."\t".$final_set[4]."\t".$final_set[5]."\t".$final_set[6]."\t".$final_set[7]."\t".$final_set[8]."\n";
+		    #print $final_set[0]."\t".$final_set[1]."\t".$final_set[2]."\t".$final_set[3]."\t".$final_set[4]."\t".$final_set[5]."\t".$final_set[6]."\t".$final_set[7]."\t".$final_set[8]."\n";
 
-				$itisid = '';
+		    $itisid = '';
 	            $rkingdom = '';
 	            $rphylum = '';
 	            $rclass = '';
 	            $rorder = '';
 	            $rfamily = '';
 	            $rgenus = '';
-                $rspecies = '';
-                @row2 = ();
+                    $rspecies = '';
+                    @row2 = ();
 			}else{
 					$cmd3 = 'echo '.'\"'.$id.'\"'.'  > /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
 	 				system($cmd3);
-	               	$cmd4 =  'Rscript --vanilla /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/taxizeRscript.ncbi.R /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
+	               	                $cmd4 =  'Rscript --vanilla /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/taxizeRscript.ncbi.R /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
 		 			$outcmd4 = `$cmd4`;
 		 			@fields3 = split("\n", $outcmd4);
 		 			foreach my $key (@fields3)
@@ -260,10 +262,14 @@ foreach my $id (@unique_query_terms)
 			            $stmt->execute(undef, "NCBI", $final_set[0], $final_set[1], $final_set[2], $final_set[3], $final_set[4], $final_set[5], $final_set[6], $final_set[7] , $final_set[8], '', $final_set[9]) or die "Couldn't execute statement: " . $stmt->errstr;
 			               	                
 			           	#Request the taxid of the last inserted row
-			            $stmt = $dbh->prepare('select seq from sqlite_sequence where name=?');
-			            $stmt->execute("TAXONOMY");
-		                my @row3 = $stmt->fetchrow_array();
-		                $taxid_of{$id}=$row3[0];
+					
+					$outcmd = undef;
+		    			$cmd = "sqlite3 ".$database." \"select seq from sqlite_sequence where name= \'".'TAXONOMY'."\';\"";
+		    			$outcmd = `$cmd`;
+			
+	            			@fields3 = split '\|', $outcmd;
+	            			$taxid_of{$id}=$fields3[0];
+		   
 
 		                #print "Added to DB from NCBI\n";	
 						#print $final_set[0]."\t".$final_set[1]."\t".$final_set[2]."\t".$final_set[3]."\t".$final_set[4]."\t".$final_set[5]."\t".$final_set[6]."\t".$final_set[7]."\t".$final_set[8]."\t".$final_set[9]."\n";
