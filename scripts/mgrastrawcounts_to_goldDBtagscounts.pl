@@ -132,9 +132,9 @@ foreach my $id (@unique_query_terms)
 		 }
 		 else{
 		 	#### DOWNLOADING NEW TAXONOMY ENTRY #####
-	 		$cmd3 = 'echo '.'\"'.$id.'\"'.'  > /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
+	 		$cmd3 = 'echo '.'\"'.$id.'\"'.'  > query.txt';
 	 		system($cmd3);
-	 		$cmd4 =  'Rscript --vanilla /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/taxizeRscript.R /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
+	 		$cmd4 =  'Rscript --vanilla taxizeRscript.R query.txt';
 	 		$outcmd4 = `$cmd4`;
 	 		@fields3 = split("\n", $outcmd4);
 	 		foreach my $key (@fields3)
@@ -206,9 +206,9 @@ foreach my $id (@unique_query_terms)
                     $rspecies = '';
                     @row2 = ();
 			}else{
-					$cmd3 = 'echo '.'\"'.$id.'\"'.'  > /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
+					$cmd3 = 'echo '.'\"'.$id.'\"'.'  > query.txt';
 	 				system($cmd3);
-	               	                $cmd4 =  'Rscript --vanilla /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/taxizeRscript.ncbi.R /Users/tito-admin/Tito/JOYELABACKUP/GZ_BACKUP/Temp14/get_taxonomy/query.txt';
+	               	                $cmd4 =  'Rscript --vanilla taxizeRscript.ncbi.R query.txt';
 		 			$outcmd4 = `$cmd4`;
 		 			@fields3 = split("\n", $outcmd4);
 		 			foreach my $key (@fields3)
