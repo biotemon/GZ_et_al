@@ -218,10 +218,6 @@ for (my $i=0; $i < scalar(@input_file); $i++)
 			$cmd4 = 'echo '.$val.'  >> '.$ARGV[0].'_taxonomyXcounts.txt';
 			system($cmd4);
 	}else{
-
-		#$val = $id.'$\'\t\''.'NO_TAX_ID'.'$\'\t\''.$sample_id.'$\'\t\''.$the_counts.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.''.'$\'\t\''.'';
-		#$cmd4 = 'echo '.$val.'  >> '.$ARGV[0].'_taxonomyXcounts.txt';
-		#system($cmd4);
 			$val = '\''.$id.'\t'.'NO_TAX_ID'.'\t'.$sample_id.'\t'.$the_counts.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.''.'\t'.'_'.'\'';
 			$cmd4 = 'echo '.$val.'  >> '.$ARGV[0].'_taxonomyXcounts.txt';
 			system($cmd4);
