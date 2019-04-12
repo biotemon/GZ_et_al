@@ -74,6 +74,7 @@ for (my $i=0; $i < scalar(@input_file); $i++)
  	$fields[0] =~ s/\)//g;
  	$fields[0] =~ s/\[//g;
  	$fields[0] =~ s/\]//g;
+	$fields[0] =~ s/\'//g;
 	if(!(in { $fields[0] eq $_ } @unique_query_terms )){
 		push @unique_query_terms, $fields[0];
 	 }
