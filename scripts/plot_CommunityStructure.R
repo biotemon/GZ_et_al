@@ -381,6 +381,10 @@ colfunc <- colorRampPalette(c("#c7c5c4", "#9001c9", "#cc12c0", "#9E0142", "#ff9e
 simple_color_vec <- colfunc(xval)
 #SETCOLORSHERE
 
+#Sorting bars (x-axis wise) by sorting the levels of the "Treatment" column
+simple_absolute_melt$sample_names = factor(simple_absolute_melt$sample_names,levels = sample_names)
+simple_relative_melt$sample_names = factor(simple_relative_melt$sample_names,levels = sample_names)
+
 pdf("taxonomy_abs_cutoff_SETTHRESHOLDHERE.pdf", width=12, height=7)
 ggplot(data = simple_absolute_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity", size = 0.25) + theme_classic() + theme(axis.text.x = element_text(color="black", angle = 90, hjust = 1),axis.text.y = element_text(color="black")) + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1)) + xlab("Treatments")
 dev.off()
