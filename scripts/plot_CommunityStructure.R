@@ -211,7 +211,9 @@ for(i in 1:dim(my_relative)[2])
 my_absolute = t(rowsum(t(my_absolute), colnames(my_absolute)))
 my_relative = t(rowsum(t(my_relative), colnames(my_relative)))
 
-#}
+#Some times a column with a _ name gets here.
+my_absolute = my_absolute[, colnames(my_absolute) != "_"]
+my_relative = my_relative[, colnames(my_relative) != "_"]
 
 
 ###### Preparing Matrices for plotting ########
