@@ -25,7 +25,7 @@ taxonomyXcounts <- read.delim("SETTAXCOUNTSFILEHERE")
 taxonomyXcounts<-taxonomyXcounts[!(taxonomyXcounts$SUPERKINGDOM=="Unknown"),]
 
 sample_names = c("SETSAMPLENAMESHERE")
-samples <- c(1:length(sample_names))
+samples <- c("SETSAMPLENUMBERSHERE")
 
 #Definition of my_level
 #my_level ==> Superkingdom level 1
