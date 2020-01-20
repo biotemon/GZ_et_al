@@ -24,6 +24,7 @@ taxonomyXcounts <- read.delim("SETTAXCOUNTSFILEHERE")
 #Remove unknown terms
 taxonomyXcounts<-taxonomyXcounts[!(taxonomyXcounts$SUPERKINGDOM=="Unknown"),]
 
+desired_order = c("SETDESIREDBARORDERHERE")
 sample_names = c("SETSAMPLENAMESHERE")
 samples <- c("SETSAMPLENUMBERSHERE")
 
@@ -378,14 +379,22 @@ for(i in 1:length(old_terms_vec)){
 
 #Colors
 xval =  dim(simple_relative_matrix_3)[2] - 1
-#colfunc <- colorRampPalette(brewer.pal(11,"Spectral"))
-colfunc <- colorRampPalette(c("#c7c5c4", "#9001c9", "#cc12c0", "#9E0142", "#ff9e9e", "#ff2900", "#ff6f00", "#ffaa00" , "#ffe100",  "#eadf60", "#8db500",  "#b5d153", "#118200", "#72996c", "#00ffd8", "#00b2ff", "#97c6bf",  "#43a898", "#357089",  "#1b44d6", "#849fff", "#5a6384" ))
-simple_color_vec <- colfunc(xval)
-#SETCOLORSHERE
+xvalA = ceiling(xval/3)
+xvalB = xval - xvalA - xvalA
+xvalC = xval - xvalA - xvalB
+colfuncA <- colorRampPalette(brewer.pal(11,"RdYlBu"))
+colfuncB <- colorRampPalette(brewer.pal(11,"PiYG"))
+colfuncC <- colorRampPalette(brewer.pal(11,"BrBG"))
+simple_color_vecA <- colfuncA(xvalA)
+simple_color_vecB <- colfuncB(xvalB)
+simple_color_vecC <- colfuncC(xvalC)
+simple_color_vec <- c(simple_color_vecA,simple_color_vecB,simple_color_vecC)
+#If you need to change a color simply call
+#simple_color_vec[i] <- "#HEXCOLOR"
 
 #Sorting bars (x-axis wise) by sorting the levels of the "Treatment" column
-simple_absolute_melt$sample_names = factor(simple_absolute_melt$sample_names,levels = sample_names)
-simple_relative_melt$sample_names = factor(simple_relative_melt$sample_names,levels = sample_names)
+simple_absolute_melt$sample_names = factor(simple_absolute_melt$sample_names,levels = desired_order)
+simple_relative_melt$sample_names = factor(simple_relative_melt$sample_names,levels = desired_order)
 
 pdf("taxonomy_abs_cutoff_SETTHRESHOLDHERE.pdf", width=12, height=7)
 ggplot(data = simple_absolute_melt, aes(x = sample_names, y = value, fill = variable)) + geom_bar(colour="black", stat = "identity", size = 0.25) + theme_classic() + theme(axis.text.x = element_text(color="black", angle = 90, hjust = 1),axis.text.y = element_text(color="black")) + scale_fill_manual(values = simple_color_vec) + scale_y_continuous(name="Read Counts", labels = scales::comma, expand = c(0, 0)) + guides(fill=guide_legend(ncol=1)) + xlab("Treatments")
